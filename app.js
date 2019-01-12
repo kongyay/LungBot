@@ -2,7 +2,6 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const express = require('express')
 
-const config = require('../config.json')
 var carou = require('./carousel.json')
 var predBox = require('./predictBox.json')
 var about = require('./about.json')
@@ -12,11 +11,11 @@ var insideId = [
 ]
 
 const app = express()
-const port = process.env.PORT || 8080
+const port = 3000
 const hostname = 'localhost'
 const HEADERS = {
 	'Content-Type': 'application/json',
-	'Authorization': 'Bearer ' + config.channelAccessToken
+	'Authorization': 'Bearer ' + process.env.channelAccessToken
 }
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -53,7 +52,7 @@ app.post('/webhook', (req, res) => {
 
 function push(msg) {
 	let body = JSON.stringify({
-	to: config.userId,
+	to: process.env.userId,
 	messages: [{
 		type: 'text',
 		text: msg
@@ -128,7 +127,7 @@ function handleEvent(event) {
 		}
 
 		var options = {
-      uri: `http://${config.serverIp}/api/putSanam`,
+      uri: `http://${process.env.serverIp}/api/putSanam`,
       body: JSON.stringify(payload),
       method: 'POST',
       headers: {
@@ -162,7 +161,7 @@ function handleEvent(event) {
 
 		console.log(event.beacon.type === 'enter' ? '++++++++++':'----------',insideId.length,new Date(event.timestamp),`EVENT Beacon: ${JSON.stringify(event)}`);
 		if(insideId.length>=2) {
-			if(event.source.userId === config.userId)
+			if(event.source.userId === process.env.userId)
 				return push(`จำนวนคนเกิน กรุณาเชิญคนออกจากบริเวณ ${insideId.length}/2`);
 			else
 				return reply(event.replyToken,`จำนวนคนเกินกว่าที่อนุญาต กรุณาออกจากบริเวณ ${insideId.length}/2`);
@@ -181,7 +180,7 @@ function handleText(replyToken, message) {
 	console.log(msg)
 	if(msg === 'admin_mon') {
 		var options = {
-      uri: `http://${config.serverIp}/api/getAdminMon`,
+      uri: `http://${process.env.serverIp}/api/getAdminMon`,
       method: 'GET',
       headers: {
 				'Content-Type': 'application/json',
@@ -222,7 +221,7 @@ function handleText(replyToken, message) {
 	
 	else if(msg === 'predict') {
 		var options = {
-      uri: `http://${config.serverIp}/api/predict`,
+      uri: `http://${process.env.serverIp}/api/predict`,
       method: 'GET',
       headers: {
 				'Content-Type': 'application/json',
