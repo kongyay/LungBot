@@ -15,7 +15,7 @@ const port = 3000
 const hostname = 'localhost'
 const HEADERS = {
 	'Content-Type': 'application/json',
-	'Authorization': 'Bearer ' + process.env.channelAccessToken
+	'Authorization': 'Bearer ' + process.env.CHANNEL_ACCESS_TOKEN
 }
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -52,7 +52,7 @@ app.post('/webhook', (req, res) => {
 
 function push(msg) {
 	let body = JSON.stringify({
-	to: process.env.userId,
+	to: process.env.USER_ID,
 	messages: [{
 		type: 'text',
 		text: msg
@@ -127,7 +127,7 @@ function handleEvent(event) {
 		}
 
 		var options = {
-      uri: `http://${process.env.serverIp}/api/putSanam`,
+      uri: `http://${process.env.SERVER_IP}/api/putSanam`,
       body: JSON.stringify(payload),
       method: 'POST',
       headers: {
@@ -161,7 +161,7 @@ function handleEvent(event) {
 
 		console.log(event.beacon.type === 'enter' ? '++++++++++':'----------',insideId.length,new Date(event.timestamp),`EVENT Beacon: ${JSON.stringify(event)}`);
 		if(insideId.length>=2) {
-			if(event.source.userId === process.env.userId)
+			if(event.source.userId === process.env.SERVER_IP)
 				return push(`จำนวนคนเกิน กรุณาเชิญคนออกจากบริเวณ ${insideId.length}/2`);
 			else
 				return reply(event.replyToken,`จำนวนคนเกินกว่าที่อนุญาต กรุณาออกจากบริเวณ ${insideId.length}/2`);
@@ -180,7 +180,7 @@ function handleText(replyToken, message) {
 	console.log(msg)
 	if(msg === 'admin_mon') {
 		var options = {
-      uri: `http://${process.env.serverIp}/api/getAdminMon`,
+      uri: `http://${process.env.SERVER_IP}/api/getAdminMon`,
       method: 'GET',
       headers: {
 				'Content-Type': 'application/json',
@@ -221,7 +221,7 @@ function handleText(replyToken, message) {
 	
 	else if(msg === 'predict') {
 		var options = {
-      uri: `http://${process.env.serverIp}/api/predict`,
+      uri: `http://${process.env.SERVER_IP}/api/predict`,
       method: 'GET',
       headers: {
 				'Content-Type': 'application/json',
