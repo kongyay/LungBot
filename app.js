@@ -22,7 +22,10 @@ const HEADERS = {
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-// Push
+app.get('/', (req, res) => {
+	res.send('Why r u here ?')
+})
+
 app.get('/webhook', (req, res) => {
 	// push block
 	let msg = "hello TESA"

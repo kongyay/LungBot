@@ -1,1 +1,2 @@
-# LungBot
+# Lung Bot
+สวัสดีครับบ
