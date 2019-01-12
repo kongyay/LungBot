@@ -11,8 +11,7 @@ var insideId = [
 ]
 
 const app = express()
-const port = 3000
-const hostname = 'localhost'
+const port = process.env.PORT || 3000
 const HEADERS = {
 	'Content-Type': 'application/json',
 	'Authorization': 'Bearer ' + process.env.CHANNEL_ACCESS_TOKEN
@@ -248,6 +247,6 @@ function handleText(replyToken, message) {
 	  return null;
   }
 
-app.listen(port, hostname, () => {
-	console.log(`Server running at http://${hostname}:${port}/`)
+app.listen(port, () => {
+	console.log(`Server running at ${port}`)
 })
